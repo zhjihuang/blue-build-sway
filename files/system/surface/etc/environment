@@ -1,0 +1,7 @@
+__EGL_VENDOR_LIBRARY_FILENAMES="/usr/share/glvnd/egl_vendor.d/50_mesa.json"
+VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/intel_icd.x86_64.json:/usr/share/vulkan/icd.d/intel_icd.i686.json
+DXVK_FILTER_DEVICE_NAME="Intel"
+VKD3D_FILTER_DEVICE_NAME="Intel"
+__GLX_VENDOR_LIBRARY_NAME="mesa"
+VDPAU_DRIVER=va_gl
+CUDA_VISIBLE_DEVICES=null
