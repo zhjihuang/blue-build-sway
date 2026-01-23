@@ -15,41 +15,6 @@ dnf5 -y install --allowerasing kernel-surface iptsd libwacom-surface surface-sec
 # Remove the default Fedora kernel and related packages
 dnf5 -y remove kernel kernel-core kernel-modules kernel-modules-core kernel-modules-extra
 
-tee /usr/lib/modules-load.d/surface.conf << EOF
-# Only on AMD models
-pinctrl_amd
-
-# Surface Book 2
-pinctrl_sunrisepoint
-
-# For Surface Laptop 3/Surface Book 3
-pinctrl_icelake
-
-# For Surface Laptop 4/Surface Laptop Studio
-pinctrl_tigerlake
-
-# For Surface Pro 9/Surface Laptop 5
-pinctrl_alderlake
-
-# For Surface Pro 10/Surface Laptop 6
-pinctrl_meteorlake
-
-# Only on Intel models
-intel_lpss
-intel_lpss_pci
-
-# Add modules necessary for Disk Encryption via keyboard
-surface_aggregator
-surface_aggregator_registry
-surface_aggregator_hub
-surface_hid_core
-8250_dw
-
-# Surface Laptop 3/Surface Book 3 and later
-surface_hid
-surface_kbd
-EOF
-
 KERNEL_SUFFIX="surface"
 QUALIFIED_KERNEL="$(rpm -qa | grep -P 'kernel-(|'"$KERNEL_SUFFIX"'-)(\d+\.\d+\.\d+)' | sed -E 's/kernel-(|'"$KERNEL_SUFFIX"'-)//')"
 /usr/bin/dracut --no-hostonly --kver "$QUALIFIED_KERNEL" --reproducible -v --add ostree -f "/lib/modules/$QUALIFIED_KERNEL/initramfs.img"
