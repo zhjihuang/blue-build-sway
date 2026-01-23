@@ -1,0 +1,13 @@
+---
+# yaml-language-server: $schema=https://schema.blue-build.org/module-list-v1.json
+
+type: dnf
+install:
+  skip-unavailable: true
+  packages:
+    - iptsd
+    - libcamera
+    - libcamera-tools
+    - libcamera-gstreamer
+    - libcamera-ipa
+    - pipewire-plugin-libcamera
