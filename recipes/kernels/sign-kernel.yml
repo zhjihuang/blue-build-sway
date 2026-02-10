@@ -1,0 +1,18 @@
+---
+# yaml-language-server: $schema=https://schema.blue-build.org/module-list-v1.json
+
+modules:
+  - type: script
+    env:
+      PUBLIC_KEY_DER_PATH: '/etc/pki/akmods/certs/zhjihuang-blue-build.der'
+    secrets:
+      - type: file
+        source: "./MOK.priv"
+        mount: 
+          type: file
+          destination: '/tmp/certs/private_key.priv'
+    scripts:
+      - sign-kernel.sh
+  - type: initramfs
+    env:
+      DRACUT_NO_XATTR: '1'

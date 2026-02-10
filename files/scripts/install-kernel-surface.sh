@@ -2,42 +2,56 @@
 
 set -ouex pipefail
 
-KERNEL_LOCK="kernel{,-core,-modules,-modules-core,-modules-extra,-tools,-tools-lib,-headers,-devel,-devel-matched}"
-KERNEL_SUFFIX="surface"
 REPOSITORY_SURFACE="https://pkg.surfacelinux.com/fedora/linux-surface.repo"
+KERNEL_LOCK=(
+  'kernel'
+  'kernel-core'
+  'kernel-modules'
+  'kernel-modules-core'
+  'kernel-modules-extra'
+  'kernel-tools'
+  'kernel-tools-lib'
+  'kernel-headers'
+  'kernel-devel'
+  'kernel-devel-matched'
+)
 PACKAGES_KERNEL_DEFAULT=(
-  kernel
-  kernel-core
-  kernel-modules
-  kernel-modules-core
-  kernel-modules-extra
+  'kernel'
+  'kernel-core'
+  'kernel-modules'
+  'kernel-modules-core'
+  'kernel-modules-extra'
 )
 PACKAGES_KERNEL_SURFACE=(
-  kernel-surface
-  iptsd
-  libwacom-surface
-  surface-secureboot
-  surface-control
+  'kernel-surface'
+  'iptsd'
+  'libwacom-surface'
+  'surface-secureboot'
+  'surface-control'
 )
 
 # remove kernel locks
-dnf5 versionlock delete ${KERNEL_LOCK} 
+dnf5 versionlock \
+     delete \
+     ${KERNEL_LOCK[@]}
 
 # Add the Surface Linux repo
-dnf5 config-manager addrepo --from-repofile=${REPOSITORY_SURFACE}
+dnf5 config-manager \
+     addrepo \
+     --from-repofile=${REPOSITORY_SURFACE}
 
 # Install the Surface Linux kernel and related packages
-dnf5 -y install --allowerasing "${PACKAGES_KERNEL_SURFACE[@]}"
+dnf5 install \
+     --assumeyes \
+     --allowerasing \
+     ${PACKAGES_KERNEL_SURFACE[@]}
 
 # Remove the default Fedora kernel and related packages
-dnf5 -y remove "${PACKAGES_KERNEL_DEFAULT[@]}"
-
-# Rebuild initramfs
-KERNEL_QUALIFIED="$(rpm -qa | grep -P 'kernel-(|'"$KERNEL_SUFFIX"'-)(\d+\.\d+\.\d+)' | sed -E 's/kernel-(|'"$KERNEL_SUFFIX"'-)//')"
-/usr/bin/dracut --no-hostonly --kver "${KERNEL_QUALIFIED}" --reproducible -v --add ostree -f "/lib/modules/${KERNEL_QUALIFIED}/initramfs.img"
-chmod 0600 "/lib/modules/${KERNEL_QUALIFIED}/initramfs.img"
+dnf5 remove \
+     --assumeyes \
+     ${PACKAGES_KERNEL_DEFAULT[@]}
 
 # Prevent kernel from upgrading again
-dnf5 versionlock add ${KERNEL_LOCK}
+dnf5 versionlock add ${KERNEL_LOCK[@]}
 
 dnf5 clean all

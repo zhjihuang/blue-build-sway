@@ -7,6 +7,6 @@ modules:
       - install-kernel-surface.sh
   - type: files
     files:
-      - source: system/surface/
-        destination: / # copies files/system/surface/* into your image's root folder /
+      - source: systems/surface/
+        destination: /
   - from-file: packages/install-packages-surface.yml

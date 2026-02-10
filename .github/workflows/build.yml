@@ -28,7 +28,18 @@ jobs:
         recipe:
           # !! Add your recipes here
           - recipe-surface.yml
+
     steps:
+      - uses: actions/checkout@v6.0.2
+        with:
+          persist-credentials: false
+
+      - name: Extract kernel key
+        shell: bash
+        env:
+          SIGNING_SECRET_KERNEL: ${{ secrets.SIGNING_SECRET_KERNEL }}
+        run: echo "${SIGNING_SECRET_KERNEL}" | base64 -d > "${GITHUB_WORKSPACE}/MOK.priv"
+
       # the build is fully handled by the reusable github action
       - name: Build Custom Image
         uses: blue-build/github-action@v1.10
@@ -37,6 +48,7 @@ jobs:
           cosign_private_key: ${{ secrets.SIGNING_SECRET }}
           registry_token: ${{ github.token }}
           pr_event_number: ${{ github.event.number }}
+          skip_checkout: true
 
           # enabled by default, disable if your image is small and you want faster builds
           maximize_build_space: true

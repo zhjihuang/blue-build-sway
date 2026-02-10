@@ -1,3 +1,10 @@
+# BlueBuild files
 cosign.key
 cosign.private
 /Containerfile
+
+# Emacs files
+*~
+
+# Vim files
+*.swp
