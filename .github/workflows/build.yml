@@ -27,7 +27,8 @@ jobs:
       matrix:
         recipe:
           # !! Add your recipes here
-          - recipe-surface.yml
+          - recipe-nvidia.yml
+          - recipe-surface-nvidia.yml
 
     steps:
       - uses: actions/checkout@v6.0.2

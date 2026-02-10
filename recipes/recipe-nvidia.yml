@@ -1,0 +1,18 @@
+---
+# yaml-language-server: $schema=https://schema.blue-build.org/recipe-v1.json
+
+name: blue-build-sway-nvidia
+description: This is my personal OS image.
+base-image: 'quay.io/fedora/fedora-sway-atomic'
+image-version: 42
+modules:
+  - type: files
+    files:
+      - source: systems/base/
+        destination: /
+  - from-file: kernels/install-akmod-nvidia.yml
+  - from-file: kernels/sign-kernel.yml
+  - from-file: packages/remove-packages-common.yml
+  - from-file: packages/install-packages-common.yml
+  # Sets up the proper policy & signing files for signed images to work fully.
+  - type: signing
