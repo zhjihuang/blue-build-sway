@@ -13,7 +13,16 @@ modules:
   - from-file: kernels/install-kernel-surface.yml
   - from-file: kernels/install-akmod-nvidia.yml
   - from-file: kernels/sign-kernel.yml
+  - type: script
+    snippets:                                                                                                 
+      - systemctl enable nvidia-suspend.service nvidia-resume.service nvidia-hibernate.service nvidia-suspend-then-hibernate.service
+      - systemctl disable nvidia-persistenced.service
   - from-file: packages/remove-packages-common.yml
   - from-file: packages/install-packages-common.yml
+  - from-file: packages/install-packages-surface.yml
+  - from-file: packages/install-packages-surface-nvidia.yml
+  - type: script
+    snippets:                                                                                                 
+      - systemctl enable switcheroo-control.service
   # Sets up the proper policy & signing files for signed images to work fully.
   - type: signing
