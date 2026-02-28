@@ -1,13 +1,34 @@
 ---
 # yaml-language-server: $schema=https://schema.blue-build.org/module-list-v1.json
 
-type: dnf
-install:
-  skip-unavailable: true
-  packages:
-    - iptsd
-    - libcamera
-    - libcamera-tools
-    - libcamera-gstreamer
-    - libcamera-ipa
-    - pipewire-plugin-libcamera
+modules:
+  # -------------------------------- 
+  # Camera Support
+  # ================================ 
+  - type: dnf
+    install:
+      skip-unavailable: true
+      packages:
+        - intel-vsc-firmware
+        - libcamera
+        - libcamera-tools
+        - libcamera-gstreamer
+        - libcamera-ipa
+        - pipewire-plugin-libcamera
+  - type: script
+    snippets:
+      - unxz --keep '/usr/lib/firmware/intel/ipu/irci_irci_ecr-master_20161208_0213_20170112_1500.bin.xz'
+      - mv '/usr/lib/firmware/intel/ipu/irci_irci_ecr-master_20161208_0213_20170112_1500.bin' '/lib/firmware/intel/ipu3-fw.bin'
+  # -------------------------------- 
+  # Miscellaneous
+  # ================================ 
+  - type: dnf
+    install:
+      skip-unavailable: true
+      packages:
+        - iptsd
+        - surface-dtx-daemon
+  - type: script
+    snippets:
+      - systemctl enable cpupower-boot.service cpupower-resume.service 
+      - systemctl enable surface-dtx-daemon.service

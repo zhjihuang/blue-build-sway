@@ -25,9 +25,11 @@ chmod 1777 "/var/tmp"
 if [[ "$IMAGE_NAME" == *'surface'* ]]; then
   KERNEL_NAME='kernel-surface'
   KERNEL_DEVEL_NAME='kernel-surface-devel'
+  DRIVER_VERSION='580'
 else
   KERNEL_NAME='kernel'
   KERNEL_DEVEL_NAME='kernel-devel-matched'
+  DRIVER_VERSION='580'
 fi
 KERNEL_VERSION="$(rpm -q ${KERNEL_NAME} --queryformat '%{VERSION}-%{RELEASE}.%{ARCH}')"
 RELEASE="$(rpm -E '%fedora.%_arch')"
@@ -49,11 +51,11 @@ else
        --silent \
        --show-error \
        --retry 5 \
-       -o '/etc/yum.repos.d/fedora-nvidia-580.repo' \
+       -o "/etc/yum.repos.d/fedora-nvidia-${DRIVER_VERSION}.repo" \
        'https://negativo17.org/repos/fedora-nvidia-580.repo'
   sed --in-place \
       '/^enabled=1/a\priority=90' \
-      '/etc/yum.repos.d/fedora-nvidia-580.repo'
+      "/etc/yum.repos.d/fedora-nvidia-${DRIVER_VERSION}.repo"
   if [ -f '/etc/yum.repos.d/fedora-multimedia.repo' ]; then
     sed --in-place \
         's/^enabled=.*/enabled=0/' \
@@ -187,5 +189,5 @@ fi
 
 rm -f 'nvidia-container.pp'
 rm -f '/etc/yum.repos.d/nvidia-container-toolkit.repo'
-rm -f '/etc/yum.repos.d/fedora-nvidia-580.repo'
+rm -f "/etc/yum.repos.d/fedora-nvidia-${DRIVER_VERSION}.repo"
 rm -f '/etc/yum.repos.d/negativo17-fedora-nvidia.repo'

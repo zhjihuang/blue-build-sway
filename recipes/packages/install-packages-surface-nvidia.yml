@@ -1,8 +1,12 @@
 ---
 # yaml-language-server: $schema=https://schema.blue-build.org/module-list-v1.json
 
-type: dnf
-install:
-  skip-unavailable: true
-  packages:
-    - switcheroo-control
+modules:
+  - type: dnf
+    install:
+      skip-unavailable: true
+      packages:
+        - switcheroo-control
+  - type: script
+    snippets:
+      - systemctl enable switcheroo-control.service

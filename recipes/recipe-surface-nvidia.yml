@@ -11,18 +11,37 @@ modules:
       - source: systems/base/
         destination: /
   - from-file: kernels/install-kernel-surface.yml
+
+  # -------------------------------- 
+  # Nvidia
+  # ================================ 
   - from-file: kernels/install-akmod-nvidia.yml
-  - from-file: kernels/sign-kernel.yml
+  - type: files
+    files:
+      - source: systems/nvidia/
+        destination: /
+      - source: systems/surface-nvidia/
+        destination: /
   - type: script
-    snippets:                                                                                                 
+    scripts:
+      - post-install-akmod-nvidia.sh
+  - type: kargs
+    kargs:
+      - rd.driver.blacklist=nouveau
+      - modprobe.blacklist=nouveau
+      - nvidia-drm.modeset=0
+      - nvidia.NVreg_DynamicPowerManagement=0x02
+      - nvidia.NVreg_EnableS0ixPowerManagement=0x01
+      - nvidia.NVreg_PreserveVideoMemoryAllocations=1
+  - type: script
+    snippets:
       - systemctl enable nvidia-suspend.service nvidia-resume.service nvidia-hibernate.service nvidia-suspend-then-hibernate.service
       - systemctl disable nvidia-persistenced.service
+
+  - from-file: kernels/sign-kernel.yml
   - from-file: packages/remove-packages-common.yml
   - from-file: packages/install-packages-common.yml
   - from-file: packages/install-packages-surface.yml
   - from-file: packages/install-packages-surface-nvidia.yml
-  - type: script
-    snippets:                                                                                                 
-      - systemctl enable switcheroo-control.service
   # Sets up the proper policy & signing files for signed images to work fully.
   - type: signing

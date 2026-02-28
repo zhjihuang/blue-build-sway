@@ -35,6 +35,7 @@ install:
     - libimobiledevice-utils
     - libratbag-ratbagd
     - libva-utils
+    - linux-firmware
     - lshw
     - mesa-libxatracker
     - net-tools

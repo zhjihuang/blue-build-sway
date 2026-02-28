@@ -10,7 +10,25 @@ modules:
     files:
       - source: systems/base/
         destination: /
+
+  # -------------------------------- 
+  # Nvidia
+  # ================================ 
   - from-file: kernels/install-akmod-nvidia.yml
+  - type: files
+    files:
+      - source: systems/nvidia/
+        destination: /
+  - type: script
+    scripts:
+      - post-install-akmod-nvidia.sh
+  - type: kargs
+    kargs:
+      - rd.driver.blacklist=nouveau
+      - modprobe.blacklist=nouveau
+      - nvidia-drm.modeset=1
+      - nvidia-drm.fbdev=1
+
   - from-file: kernels/sign-kernel.yml
   - from-file: packages/remove-packages-common.yml
   - from-file: packages/install-packages-common.yml
