@@ -7,7 +7,6 @@ if [ $dgpu_state != D3cold ]; then
     exit 1
 fi
 
-
 # unmount all USB devices
 for usb_dev in /dev/disk/by-id/usb-*
 do

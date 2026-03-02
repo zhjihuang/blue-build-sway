@@ -5,7 +5,7 @@ type: dnf
 install:
   skip-unavailable: true
   packages:
-    # GENERAL
+    # General
     - alsa-firmware
     - android-udev-rules
     - apr
@@ -18,11 +18,10 @@ install:
     - flatpak-spawn
     - fuse
     - fzf
-    - google-noto-fonts-all-vf
     - grub2-tools-extra
     - heif-pixbuf-loader
     - htop
-    - ibm-plex-fonts-all
+    - inotify-tools
     - intel-vaapi-driver
     - just
     - libavcodec
@@ -65,7 +64,10 @@ install:
     - xorg-x11-xauth
     - yubikey-manager
     - zstd
-    # SWAY
+    # Fonts
+    - google-noto-fonts-all-vf
+    - ibm-plex-fonts-all
+    # Sway
     - clipman
     - gvfs-mtp
     - thunar-volman
