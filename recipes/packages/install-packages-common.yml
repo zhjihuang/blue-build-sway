@@ -67,6 +67,8 @@ install:
     # Fonts
     - google-noto-fonts-all-vf
     - ibm-plex-fonts-all
+    # Icons
+    - papirus-icon-theme
     # Sway
     - clipman
     - gvfs-mtp

@@ -17,8 +17,10 @@ echo $STATE
 
 if [[ $STATE == "battery" ]]; then
   echo "Discharging, set governor to powersave"
+  tuned-adm profile powersave
   cpupower frequency-set -g powersave
 elif [[ $STATE == "ac"  ]]; then
   echo "AC plugged in, set governor to performance"
+  tuned-adm profile balanced
   cpupower frequency-set -g performance
 fi
