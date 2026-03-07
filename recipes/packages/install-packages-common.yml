@@ -5,7 +5,9 @@ type: dnf
 install:
   skip-unavailable: true
   packages:
+    # -------------------------------- 
     # General
+    # ================================ 
     - alsa-firmware
     - android-udev-rules
     - apr
@@ -58,18 +60,25 @@ install:
     - traceroute
     - usbmuxd
     - vim
+    - vulkan-tools # To test vulkan support.
     - wireguard-tools
     - wl-clipboard
     - xhost
     - xorg-x11-xauth
     - yubikey-manager
     - zstd
+    # -------------------------------- 
     # Fonts
+    # ================================ 
     - google-noto-fonts-all-vf
     - ibm-plex-fonts-all
+    # -------------------------------- 
     # Icons
+    # ================================ 
     - papirus-icon-theme
+    # -------------------------------- 
     # Sway
+    # ================================ 
     - clipman
     - gvfs-mtp
     - thunar-volman
