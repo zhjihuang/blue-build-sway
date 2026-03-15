@@ -13,6 +13,3 @@ modules:
           destination: '/tmp/certs/private_key.priv'
     scripts:
       - sign-kernel.sh
-  - type: initramfs
-    env:
-      DRACUT_NO_XATTR: '1'

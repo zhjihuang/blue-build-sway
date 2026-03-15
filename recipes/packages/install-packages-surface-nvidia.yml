@@ -4,9 +4,10 @@
 modules:
   - type: dnf
     install:
-      skip-unavailable: true
       packages:
         - switcheroo-control
-  - type: script
-    snippets:
-      - systemctl enable switcheroo-control.service
+  - type: systemd
+    system:
+      enabled:
+        - switcheroo-control.service
+

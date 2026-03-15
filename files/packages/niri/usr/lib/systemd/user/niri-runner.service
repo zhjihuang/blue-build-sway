@@ -1,0 +1,16 @@
+[Unit]
+Description=Runner for niri scripts.
+After=niri.service
+ConditionEnvironment=XDG_CURRENT_DESKTOP=niri
+PartOf=niri.service
+Requisite=niri.service
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/niri-runner
+KillMode=control-group
+Restart=on-failure
+PassEnvironment=DISPLAY WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
+
+[Install]
+WantedBy=niri.service

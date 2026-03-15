@@ -3,46 +3,21 @@
 
 name: blue-build-sway-surface-nvidia
 description: This is my personal OS image.
-base-image: 'quay.io/fedora/fedora-sway-atomic'
+base-image: 'quay.io/fedora-ostree-desktops/base-atomic'
 image-version: 43
+platforms:
+  - linux/amd64
 modules:
-  - type: files
-    files:
-      - source: systems/base/
-        destination: /
+  - from-file: files/copy-files-kernels-base.yml
   - from-file: kernels/install-kernel-surface.yml
-
-  # -------------------------------- 
-  # Nvidia
-  # ================================ 
   - from-file: kernels/install-akmod-nvidia.yml
-  - type: files
-    files:
-      - source: systems/nvidia/
-        destination: /
-      - source: systems/surface-nvidia/
-        destination: /
-  - type: script
-    scripts:
-      - post-install-akmod-nvidia.sh
-  - type: kargs
-    kargs:
-      - rd.driver.blacklist=nouveau
-      - modprobe.blacklist=nouveau
-      - nvidia-drm.modeset=0
-      - nvidia-drm.fbdev=0
-      - nvidia.NVreg_DynamicPowerManagement=0x02
-      - nvidia.NVreg_EnableS0ixPowerManagement=0x01
-      - nvidia.NVreg_PreserveVideoMemoryAllocations=1
-  - type: script
-    snippets:
-      - systemctl enable nvidia-suspend.service nvidia-resume.service nvidia-hibernate.service nvidia-suspend-then-hibernate.service
-      - systemctl disable nvidia-persistenced.service
-
-  - from-file: kernels/sign-kernel.yml
-  - from-file: packages/remove-packages-common.yml
-  - from-file: packages/install-packages-common.yml
+  - from-file: files/copy-files-kernels-surface-nvidia.yml
+  - from-file: kernels/post-install-akmod-nvidia-surface.yml
+  - from-file: packages/install-packages-essential.yml
   - from-file: packages/install-packages-surface.yml
   - from-file: packages/install-packages-surface-nvidia.yml
-  # Sets up the proper policy & signing files for signed images to work fully.
+  - from-file: packages/remove-packages-common.yml
+  - from-file: packages/install-packages-niri-compositor.yml
+  - from-file: files/copy-files-packages-niri.yml
+  - from-file: packages/install-packages-tools.yml
   - type: signing

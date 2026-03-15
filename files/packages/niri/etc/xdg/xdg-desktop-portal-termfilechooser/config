@@ -1,0 +1,20 @@
+[filechooser]
+; Wrappers specified within the cmd key in the config are searched
+; for in order of the following directories unless the absolute path 
+; is specified:
+; 
+;   $XDG_CONFIG_HOME/xdg-desktop-portal-termfilechooser
+;   /usr/local/share/xdg-desktop-portal-termfilechooser
+;   /usr/share/xdg-desktop-portal-termfilechooser
+;
+; Some default wrappers are already included.
+cmd=yazi-wrapper.sh
+default_dir=$HOME
+; Uncomment to skip creating destination save files with instructions in them
+; create_help_file=0
+; Uncomment and edit the line below to change the terminal emulator command
+env=TERMCMD=xdg-terminal-exec
+
+; Mode must be one of 'suggested', 'default', or 'last'.
+open_mode=suggested
+save_mode=suggested
