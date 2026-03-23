@@ -1,0 +1,14 @@
+modules:
+  - type: script
+    snippets:
+      - sed --in-place 's/omit_drivers/force_drivers/g' /usr/lib/dracut/dracut.conf.d/99-nvidia.conf
+      - sed --in-place 's/ nvidia / i915 amdgpu nvidia /g' /usr/lib/dracut/dracut.conf.d/99-nvidia.conf
+  - type: kargs
+    kargs:
+      - rd.driver.blacklist=nouveau
+      - modprobe.blacklist=nouveau
+      - i915.modeset=1          
+      - amdgpu.modeset=1
+      - nvidia-drm.modeset=1
+      - nvidia-drm.fbdev=1
+  - from-file: kernels/build-initramfs.yml

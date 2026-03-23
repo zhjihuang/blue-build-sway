@@ -1,0 +1,46 @@
+---
+# yaml-language-server: $schema=https://schema.blue-build.org/recipe-v1.json
+
+modules:
+  - type: dnf
+    install:
+      packages:
+      # Network
+      - NetworkManager-l2tp-gnome
+      - NetworkManager-libreswan-gnome
+      - NetworkManager-openconnect-gnome
+      - NetworkManager-openvpn-gnome
+      - NetworkManager-sstp-gnome
+      - NetworkManager-vpnc-gnome
+      - bluetoothctl
+      - nmtui
+      # External Devices
+      - android-tools # allows rootless control of devices
+      - bolt # thunderbolt 3
+      - fprintd-pam # fingerprint authentication
+      - pinentry-curses # Passphrase input for GPG or SSH keys
+      - kanshi # Dynamic display manager
+      - gvfs
+      - gvfs-smb
+      - kernel-tools # For tools like cpupower
+      # Media
+      - alsa-firmware # needed for certain sound devices
+      - fdk-aac-free # a better audio decoder
+      - playerctl # DBUS media control
+      - wiremix # A TUI mixer for PipeWire.
+      # Drivers
+      - mesa-dri-drivers
+      - mesa-vulkan-drivers
+      # Fonts
+      - google-noto-fonts-all-vf
+      - ibm-plex-fonts-all
+      # Icons
+      - papirus-icon-theme
+      - tuned
+      # Kernal
+      - squashfs-tools # reduces the size of initramfs
+      # Text Editor
+      - vim
+  - type: script
+    snippets:
+      - systemctl enable tuned

@@ -1,0 +1,31 @@
+---
+# yaml-language-server: $schema=https://schema.blue-build.org/recipe-v1.json
+modules:
+- type: dnf
+  install:
+    packages:
+      - btop
+      - distrobox
+      - fastfetch
+      - inotify-tools
+      - neovim
+      - swayimg # Image viewer.
+      - grim
+      - slurp
+      - ffmpeg          # Video thumbnails
+      - 7zip            # Archive support
+      - jq              # JSON previews
+      - poppler-utils   # PDF previews
+      - fd-find         # Efficient file searching
+      - ripgrep         # Content searching
+      - fzf             # Fuzzy finding
+      - zoxide          # Quick navigation
+      - ImageMagick     # Font, HEIC, and JPEG XL preview
+- type: dnf
+  repos:
+    cleanup: true
+    copr:
+      - lihaohong/yazi
+  install:
+    packages:
+      - yazi

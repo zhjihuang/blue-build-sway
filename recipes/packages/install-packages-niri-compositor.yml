@@ -1,0 +1,91 @@
+---
+# yaml-language-server: $schema=https://schema.blue-build.org/recipe-v1.json
+
+modules:
+  - type: dnf
+    install:
+      packages:
+        - niri 
+        # Login Manager
+        - cage
+        - greetd
+        - greetd-selinux
+        - gtkgreet
+        # Keyring
+        - gnome-keyring
+        - gnome-keyring-pam
+        # Notifications
+        - mako
+        # Launcher
+        - fuzzel
+        # Terminal Emulator
+        - xdg-terminal-exec
+        - foot
+        # Desktop Portals
+        - xdg-desktop-portal
+        - xdg-desktop-portal-gtk
+        - xdg-desktop-portal-gnome
+        # Policykit
+        - mate-polkit
+        # Xwayland
+        - xwayland-satellite
+        # Lock Screen
+        - swayidle
+        - swaylock
+        # Clipboard
+        - clipman
+        - wl-clipboard
+        # Background
+        - swaybg
+        # Display
+        - brightnessctl
+        # Trash
+        - trash-cli
+      exclude:
+        - alacritty # Dependency of niri
+  - type: dnf
+    repos:
+      cleanup: true
+      copr:
+        - mo-k12/personal
+    install:
+      packages:
+        - xdg-desktop-portal-termfilechooser
+  - type: dnf
+    repos:
+      cleanup: true
+      copr:
+        - errornointernet/quickshell 
+    install:
+      packages:
+        - quickshell
+  - type: files
+    files:
+      - source: packages/niri/
+        destination: /
+  - type: script
+    snippets:
+      - |
+        # Edit Gnome Keyring to show in niri
+        for FILE in /etc/xdg/autostart/gnome-keyring-{pkcs11,secrets,ssh}.desktop; do
+          sed --in-place \
+              --expression='/^OnlyShowIn=/ s/;*$/;niri;/' \
+              "$FILE"
+        done
+      - |
+        # Symlink the existing foot desktop file to the xdg-terminals directory
+        mkdir -p /usr/share/xdg-terminals
+        ln -sf /usr/share/applications/foot.desktop /usr/share/xdg-terminals/foot.desktop
+      - |
+        # Edit fuzzel to use xdg-terminal-exec 
+        git config \
+            --file '/etc/xdg/fuzzel/fuzzel.ini' \
+            'main.terminal' \
+            'xdg-terminal-exec'
+  - type: systemd
+    system:
+      enabled:
+        - greetd.service
+    user:
+      enabled:
+        - niri-runner # Custom niri script runner.
