@@ -1,0 +1,6 @@
+[terminal]
+vt = "next"
+
+[default_session]
+command = "niri --config /etc/greetd/niri-greeter.kdl"
+user = "greetd"

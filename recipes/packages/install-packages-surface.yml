@@ -4,10 +4,8 @@
 modules:
   # -------------------------------- 
   # Camera Support
-  # ================================ 
   - type: dnf
     install:
-      skip-unavailable: true
       packages:
         - intel-vsc-firmware
         - libcamera
@@ -20,15 +18,14 @@ modules:
       - unxz --keep '/usr/lib/firmware/intel/ipu/irci_irci_ecr-master_20161208_0213_20170112_1500.bin.xz'
       - mv '/usr/lib/firmware/intel/ipu/irci_irci_ecr-master_20161208_0213_20170112_1500.bin' '/lib/firmware/intel/ipu3-fw.bin'
   # -------------------------------- 
-  # Miscellaneous
-  # ================================ 
+  # Tablet Support
   - type: dnf
     install:
-      skip-unavailable: true
       packages:
         - iptsd
         - surface-dtx-daemon
-  - type: script
-    snippets:
-      - systemctl enable cpupower-boot.service cpupower-resume.service 
-      - systemctl enable surface-dtx-daemon.service
+  - type: systemd
+    system:
+      enabled:
+        - surface-dtx-daemon.service
+

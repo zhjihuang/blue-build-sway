@@ -45,6 +45,8 @@ jobs:
       - name: Build Custom Image
         uses: blue-build/github-action@v1.10
         with:
+          use_cache: 'false'
+          squash: true
           recipe: ${{ matrix.recipe }}
           cosign_private_key: ${{ secrets.SIGNING_SECRET }}
           registry_token: ${{ github.token }}

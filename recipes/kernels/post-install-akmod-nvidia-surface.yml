@@ -1,0 +1,25 @@
+modules:
+  - type: kargs
+    kargs:
+      - rhgb
+      - quiet
+      - rd.driver.blacklist=nouveau
+      - modprobe.blacklist=nouveau
+      - i915.modeset=1
+      - amdgpu.modeset=1
+      - nvidia-drm.modeset=1 
+      - nvidia-drm.modeset=0
+      - nvidia-drm.fbdev=0
+      - nvidia.NVreg_DynamicPowerManagement=0x02
+      - nvidia.NVreg_EnableS0ixPowerManagement=0x01
+      - nvidia.NVreg_PreserveVideoMemoryAllocations=1
+  - from-file: kernels/build-initramfs.yml
+  - type: systemd
+    system:
+      enabled:
+        - nvidia-suspend.service 
+        - nvidia-resume.service
+        - nvidia-hibernate.service
+        - nvidia-suspend-then-hibernate.service
+      disabled:
+        - nvidia-persistenced.service

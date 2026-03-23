@@ -5,8 +5,4 @@ modules:
   - type: script
     scripts: 
       - install-kernel-surface.sh
-  - type: files
-    files:
-      - source: systems/surface/
-        destination: /
   - from-file: packages/install-packages-surface.yml
