@@ -4,12 +4,20 @@
 modules:
   - type: script
     env:
+      DRIVER_VERSION: '580'
       PUBLIC_KEY_DER_PATH: '/etc/pki/akmods/certs/zhjihuang-blue-build.der'
     secrets:
       - type: file
         source: "./MOK.priv"
-        mount: 
+        mount:
           type: file
           destination: '/tmp/certs/private_key.priv'
     scripts:
-      - sign-kernel.sh
+      - install-akmod-nvidia-rpmfusion.sh
+  - type: dnf
+    replace:
+      - from-repo: rpmfusion-free-updates
+        allow-erasing: true
+        packages:
+          - old: ffmpeg-free
+            new: ffmpeg

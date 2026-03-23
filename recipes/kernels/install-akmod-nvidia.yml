@@ -4,6 +4,7 @@
 modules:
   - type: script
     env:
+      DRIVER_VERSION: '580'
       PUBLIC_KEY_DER_PATH: '/etc/pki/akmods/certs/zhjihuang-blue-build.der'
     secrets:
       - type: file
@@ -12,4 +13,8 @@ modules:
           type: file
           destination: '/tmp/certs/private_key.priv'
     scripts:
-      - install-akmod-nvidia.sh
+      - install-akmod-nvidia-rpmfusion.sh
+  - type: script
+    snippets:
+      - sed --in-place 's/omit_drivers/force_drivers/g' /usr/lib/dracut/dracut.conf.d/99-nvidia.conf
+      - sed --in-place 's/ nvidia / i915 amdgpu nvidia /g' /usr/lib/dracut/dracut.conf.d/99-nvidia.conf

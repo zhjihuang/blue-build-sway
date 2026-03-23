@@ -1,0 +1,27 @@
+modules:
+  - from-file: kernels/sign-kernel.yml
+  - type: dnf
+    install:
+      packages:
+      - dracut-squash
+      - squashfs-tools
+  - type: script
+    snippets:
+      - |
+        mkdir -p /usr/lib/dracut/dracut.conf.d
+        cat <<EOF > /usr/lib/dracut/dracut.conf.d/90-zstd.conf
+        compress="zstd"
+        compress_level_zstd="3"
+        EOF
+        cat <<EOF > /usr/lib/dracut/dracut.conf.d/99-squash.conf
+        add_dracutmodules+=" squash "
+        squash_compress="zstd"
+        EOF
+  - type: initramfs
+    env:
+      DRACUT_NO_XATTR: '1'
+  - type: dnf
+    remove:
+      packages:
+      - dracut-squash
+      - squashfs-tools

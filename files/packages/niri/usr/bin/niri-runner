@@ -1,0 +1,40 @@
+#!/bin/bash
+# /usr/bin/niri-runner
+
+CONFIG_DIRECTORIES=(
+  "/usr/share/niri/scripts.d"
+  "/etc/niri/scripts.d"
+  "${XDG_CONFIG_HOME:-$HOME/.config}/niri/scripts.d"
+)
+
+declare -A FINAL_SCRIPTS
+
+# 1. Collect paths (higher priority overwrites lower)
+for DIRECTORY in "${CONFIG_DIRECTORIES[@]}"; do
+  if [ -d "${DIRECTORY}" ]; then
+    for SCRIPT_PATH in "${DIRECTORY}"/*; do
+      if [ -x "${SCRIPT_PATH}" ] && [ -f "${SCRIPT_PATH}" ]; then
+        FILENAME=$(basename "${SCRIPT_PATH}")
+        FINAL_SCRIPTS["${FILENAME}"]="$SCRIPT_PATH"
+      fi
+    done
+  fi
+done
+
+# 2. Extract keys and sort them into a new array using mapfile
+# -t removes the trailing newline from each entry
+mapfile -t SORTED_KEYS < <(printf "%s\n" "${!FINAL_SCRIPTS[@]}" | sort)
+
+# 3. Launch scripts in alphabetical order
+for FILENAME in "${SORTED_KEYS[@]}"; do
+  # Skip empty entries if no scripts were found
+  [[ -z "${FILENAME}" ]] && continue
+  
+  SCRIPT="${FINAL_SCRIPTS[$FILENAME]}"
+  echo "niri-runner: Launching $FILENAME"
+  "$SCRIPT" &
+done
+
+# 4. Stay alive to manage children for systemd
+wait
+

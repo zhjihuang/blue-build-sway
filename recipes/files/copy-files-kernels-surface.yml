@@ -1,0 +1,13 @@
+---
+# yaml-language-server: $schema=https://schema.blue-build.org/module-list-v1.json
+
+modules:
+  - type: files
+    files:
+      - source: kernels/surface/
+        destination: /
+  - type: systemd
+    system:
+      enabled:
+        - cpupower-boot.service 
+        - cpupower-resume.service

@@ -12,6 +12,7 @@ install:
     - android-udev-rules
     - apr
     - apr-util
+    - btop
     - distrobox
     - fdk-aac
     - ffmpeg

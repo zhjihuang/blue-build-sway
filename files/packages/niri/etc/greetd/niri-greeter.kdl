@@ -1,0 +1,22 @@
+hotkey-overlay {
+  skip-at-startup
+}
+
+cursor {
+  xcursor-theme "Adwaita"
+  xcursor-size 24
+}
+
+window-rule {
+  match app-id="gtkgreet"
+  open-fullscreen true
+}
+
+input {
+  touchpad {
+    tap
+    natural-scroll
+  }
+}
+
+spawn-sh-at-startup "gtkgreet && niri msg action quit --skip-confirmation"
