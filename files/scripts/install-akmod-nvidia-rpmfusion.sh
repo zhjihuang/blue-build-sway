@@ -97,9 +97,18 @@ install-rpmfusion() {
     "https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-${RELEASE}.noarch.rpm"
     "https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-${RELEASE}.noarch.rpm"
   )
-  dnf install \
-      --assumeyes \
-      ${REPOSITORIES[@]}
+  dnf clean all
+  echo "Attempting to install RPM Fusion via standard mirrors..."
+  if dnf install --assumeyes "${REPOSITORIES[@]}"; then
+    echo "Successfully installed RPM Fusion."
+    return 0
+  fi
+  echo "Standard mirrors failed (likely due to a dead GitHub-routed mirror). Falling back to primary master server..."
+  local FALLBACK_REPOSITORIES=(
+    "https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-${RELEASE}.noarch.rpm"
+    "https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-${RELEASE}.noarch.rpm"
+  )  
+  dnf install --assumeyes "${FALLBACK_REPOSITORIES[@]}"
 }
 
 install-kernel-modules-43() {

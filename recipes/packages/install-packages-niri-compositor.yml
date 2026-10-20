@@ -39,6 +39,8 @@ modules:
         - swaybg
         # Display
         - brightnessctl
+        # Shell
+        - quickshell
       exclude:
         - alacritty # Dependency of niri
 
@@ -50,24 +52,6 @@ modules:
     install:
       packages:
         - xdg-desktop-portal-termfilechooser
-
-  - type: dnf
-    repos:
-      cleanup: true
-      copr:
-        - errornointernet/quickshell
-    install:
-      packages:
-        -  quickshell
-
-  - type: dnf
-    repos:
-      cleanup: true
-      copr:
-        - errornointernet/quickshell 
-    install:
-      packages:
-        - quickshell
 
   - type: files
     files:
