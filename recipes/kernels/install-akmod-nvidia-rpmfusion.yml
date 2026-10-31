@@ -21,3 +21,10 @@ modules:
         packages:
           - old: ffmpeg-free
             new: ffmpeg
+  - type: default-flatpaks
+    configurations:
+      - scope: system
+        notify: false
+        install:
+          - org.freedesktop.Platform.GL.nvidia-580
+          - org.freedesktop.Platform.VulkanLayer.nvidia-580
