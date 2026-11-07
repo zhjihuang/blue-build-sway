@@ -29,8 +29,14 @@ initial-setup() {
     KERNEL_DEVEL_NAME='kernel-devel-matched'
   fi
   KERNEL_VERSION="$(rpm -q ${KERNEL_NAME} --queryformat '%{VERSION}-%{RELEASE}.%{ARCH}')"
-  DRIVER_VERSION="${DRIVER_VERSION}:580"
-  # Fix: Use non-anchored matching to catch '580' behind the repository delimiter
+  
+  if [[ -z "${DRIVER_VERSION:-}" ]]; then
+    if [[ "$IMAGE_NAME" =~ nvidia-([0-9]{3,4})(xx)?(-|$) ]]; then
+      DRIVER_VERSION="${BASH_REMATCH[1]}"
+    else
+      DRIVER_VERSION="latest"
+    fi
+  fi
   if [[ "${DRIVER_VERSION}" =~ [0-9]+ ]]; then
     CLEAN_VERSION="${BASH_REMATCH[0]}"
     
