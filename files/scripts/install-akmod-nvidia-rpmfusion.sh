@@ -174,23 +174,23 @@ install-kernel-modules-43() {
   echo 'Installing kmod...'
   akmods --force \
          --kernels ${KERNEL_VERSION} \
-         --kmod 'nvidia'
+         --kmod "nvidia${DRIVER_SUFFIX}"
   
   # Depends on word splitting
   # shellcheck disable=SC2086
-  modinfo /usr/lib/modules/${KERNEL_VERSION}/extra/nvidia/nvidia{,-drm,-modeset,-peermem,-uvm}.ko.xz \
+  modinfo /usr/lib/modules/${KERNEL_VERSION}/extra/nvidia${DRIVER_SUFFIX}/nvidia{,-drm,-modeset,-peermem,-uvm}.ko.xz \
           > '/dev/null' \
-    || (cat "/var/cache/akmods/nvidia/*.failed.log" && exit 1)
+    || (cat "/var/cache/akmods/nvidia${DRIVER_SUFFIX}/*.failed.log" && exit 1)
   
   # View license information
   # Depends on word splitting
   # shellcheck disable=SC2086
   modinfo --license \
-          /usr/lib/modules/${KERNEL_VERSION}/extra/nvidia/nvidia{,-drm,-modeset,-peermem,-uvm}.ko.xz
+          /usr/lib/modules/${KERNEL_VERSION}/extra/nvidia${DRIVER_SUFFIX}/nvidia{,-drm,-modeset,-peermem,-uvm}.ko.xz
   
   # If the script is in the same directory, it can be called on directly.
   chmod +x ./sign-modules.sh
-  ./sign-modules.sh 'nvidia'
+  ./sign-modules.sh "nvidia${DRIVER_SUFFIX}"
 }
 
 install-nvidia-container-toolkit() {
