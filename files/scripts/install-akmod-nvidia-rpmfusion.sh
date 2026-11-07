@@ -30,17 +30,21 @@ initial-setup() {
   fi
   KERNEL_VERSION="$(rpm -q ${KERNEL_NAME} --queryformat '%{VERSION}-%{RELEASE}.%{ARCH}')"
   DRIVER_VERSION="${DRIVER_VERSION}:580"
-  if [[ "${DRIVER_VERSION}" =~ ^[0-9]+$ ]]; then
-    # If we are on Fedora 44 or newer, version 580 requires the legacy suffix
+  # Fix: Use non-anchored matching to catch '580' behind the repository delimiter
+  if [[ "${DRIVER_VERSION}" =~ [0-9]+ ]]; then
+    CLEAN_VERSION="${BASH_REMATCH[0]}"
+    
     if [[ "${RELEASE}" -ge 44 ]]; then
-      DRIVER_SUFFIX="-${DRIVER_VERSION}xx"
+      # On Fedora 44+, append the long-term support legacy suffix
+      DRIVER_SUFFIX="-${CLEAN_VERSION}xx"
     else
-      # On Fedora 43 or older, version 580 is mainstream (no suffix)
+      # On Fedora 43 or older, leave empty for mainstream tracking
       DRIVER_SUFFIX=""
     fi
   else
     DRIVER_SUFFIX=""
   fi
+
   # -------------------------------- 
   # Kernel module
   # ================================
