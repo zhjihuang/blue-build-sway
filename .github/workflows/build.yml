@@ -27,7 +27,7 @@ jobs:
       matrix:
         recipe:
           # !! Add your recipes here
-          - recipe-nvidia-open-latest.yml
+          - recipe-nvidia-proprietary-latest.yml
           - recipe-nvidia-proprietary-580.yml
           - recipe-surface-nvidia-proprietary-580.yml
 
