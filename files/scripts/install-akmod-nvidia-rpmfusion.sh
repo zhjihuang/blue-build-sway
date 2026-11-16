@@ -31,8 +31,9 @@ initial-setup() {
   KERNEL_VERSION="$(rpm -q ${KERNEL_NAME} --queryformat '%{VERSION}-%{RELEASE}.%{ARCH}')"
   
   if [[ -z "${DRIVER_VERSION:-}" ]]; then
-    if [[ "$IMAGE_NAME" =~ nvidia-proprietary-([0-9]{3,4})(xx)?(-|$) ]]; then
-      DRIVER_VERSION="${BASH_REMATCH[1]}"
+    # Captures (proprietary|open) in index 1, and the version number in index 2
+    if [[ "$IMAGE_NAME" =~ nvidia-(proprietary|open)-([0-9]{3,4})(xx)?(-|$) ]]; then
+      DRIVER_VERSION="${BASH_REMATCH[2]}"
     else
       DRIVER_VERSION="latest"
     fi
@@ -177,16 +178,23 @@ install-kernel-modules-43() {
     echo "CONFIG_NVIDIA_KERNEL=kernel" > /etc/nvidia/kernel.conf
   fi
     
+  local AKMOD_NAME="nvidia${DRIVER_SUFFIX}"
+  if [[ "$IMAGE_NAME" == *'nvidia-open'* ]]; then
+    AKMOD_NAME="nvidia-open${DRIVER_SUFFIX}"
+  fi
+
   echo 'Installing kmod...'
   akmods --force \
          --kernels ${KERNEL_VERSION} \
-         --kmod "nvidia${DRIVER_SUFFIX}"
+         --kmod "${AKMOD_NAME}"
   
   # Depends on word splitting
   # shellcheck disable=SC2086
+  # Note: The compiled modules always output to the /extra/nvidia/ folder, 
+  # but the cache uses the actual akmod package name.
   modinfo /usr/lib/modules/${KERNEL_VERSION}/extra/nvidia${DRIVER_SUFFIX}/nvidia{,-drm,-modeset,-peermem,-uvm}.ko.xz \
           > '/dev/null' \
-    || (cat "/var/cache/akmods/nvidia${DRIVER_SUFFIX}/*.failed.log" && exit 1)
+    || (cat "/var/cache/akmods/${AKMOD_NAME}/*.failed.log" && exit 1)
   
   # View license information
   # Depends on word splitting
