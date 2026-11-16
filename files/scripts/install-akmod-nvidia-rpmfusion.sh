@@ -31,7 +31,7 @@ initial-setup() {
   KERNEL_VERSION="$(rpm -q ${KERNEL_NAME} --queryformat '%{VERSION}-%{RELEASE}.%{ARCH}')"
   
   if [[ -z "${DRIVER_VERSION:-}" ]]; then
-    if [[ "$IMAGE_NAME" =~ nvidia-([0-9]{3,4})(xx)?(-|$) ]]; then
+    if [[ "$IMAGE_NAME" =~ nvidia-proprietary-([0-9]{3,4})(xx)?(-|$) ]]; then
       DRIVER_VERSION="${BASH_REMATCH[1]}"
     else
       DRIVER_VERSION="latest"

@@ -27,9 +27,9 @@ jobs:
       matrix:
         recipe:
           # !! Add your recipes here
-          - recipe-nvidia.yml
-          - recipe-nvidia-580.yml
-          - recipe-surface-nvidia-580.yml
+          - recipe-nvidia-open-latest.yml
+          - recipe-nvidia-proprietary-580.yml
+          - recipe-surface-nvidia-proprietary-580.yml
 
     steps:
       - uses: actions/checkout@v6.0.2
