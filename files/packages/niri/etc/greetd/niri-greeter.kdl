@@ -19,4 +19,4 @@ input {
   }
 }
 
-spawn-sh-at-startup "gtkgreet && niri msg action quit --skip-confirmation"
+spawn-sh-at-startup "gtkgreet; niri msg action quit --skip-confirmation"
