@@ -14,6 +14,7 @@ modules:
         # Keyring
         - gnome-keyring
         - gnome-keyring-pam
+        - gcr # Gnome crypto is required for gcr-ssh-agent.socket
         # Notifications
         - mako
         # Launcher
@@ -77,10 +78,14 @@ modules:
             --file '/etc/xdg/fuzzel/fuzzel.ini' \
             'main.terminal' \
             'xdg-terminal-exec'
+
   - type: systemd
     system:
       enabled:
         - greetd.service
     user:
       enabled:
-        - niri-runner # Custom niri script runner.
+        - gcr-ssh-agent.socket
+        # grc 4+ will automatically create a link for SSH_AUTH_SOCK.
+        - niri-runner 
+        # Custom niri script runner.
